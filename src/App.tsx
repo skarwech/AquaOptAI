@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Home, Brain, Play, FileText, Settings, Menu, X, Moon, Sun, Bell, Search, User, AlertTriangle, CheckCircle, Info, XCircle as XIcon, Activity } from 'lucide-react';
+import { Home, Brain, Play, FileText, Settings, Menu, X, Moon, Sun, Bell, Search, User, AlertTriangle, CheckCircle, Info, XCircle as XIcon, Activity, Droplets } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import ForecastAgent from './components/ForecastAgent';
 import PlannerAgent from './components/PlannerAgent';
@@ -122,8 +122,8 @@ export default function App() {
             </button>
           )}
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white">AO</span>
+            <div className="w-8 h-8 bg-white rounded-lg shadow-sm flex items-center justify-center">
+              <Droplets className="w-5 h-5 text-blue-600" />
             </div>
             <span className={`${darkMode ? 'text-white' : 'text-gray-900'} hidden sm:block`}>AquaOpt AI</span>
           </div>

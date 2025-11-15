@@ -2,37 +2,31 @@ import { useEffect } from 'react';
 
 export default function FavIcon() {
   useEffect(() => {
-    // Create SVG favicon with Droplets icon matching the login page logo
-    const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-        <rect width="100" height="100" fill="#ffffff" rx="20"/>
-        <path d="M50 20 C50 20, 35 35, 35 50 C35 58.284, 41.716 65, 50 65 C58.284 65, 65 58.284, 65 50 C65 35, 50 20, 50 20 Z" fill="#2563eb"/>
-        <path d="M50 35 C50 35, 42 43, 42 50 C42 54.418, 45.582 58, 50 58 C54.418 58, 58 54.418, 58 50 C58 43, 50 35, 50 35 Z" fill="#60a5fa"/>
-      </svg>
-    `;
+    // Remove all existing favicons
+    document.querySelectorAll("link[rel*='icon']").forEach(el => el.remove());
 
-    const blob = new Blob([svg], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
+    // Try loading from public folder first
+    const publicFavicon = document.createElement('link');
+    publicFavicon.type = 'image/svg+xml';
+    publicFavicon.rel = 'icon';
+    publicFavicon.href = '/favicon.svg?v=' + Date.now();
+    document.head.appendChild(publicFavicon);
 
-    // Remove existing favicon
-    const existingFavicon = document.querySelector("link[rel*='icon']");
-    if (existingFavicon) {
-      existingFavicon.remove();
-    }
+    // Fallback to data URL
+    const svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#ffffff" rx="12"/><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient></defs><path d="M32 14c0 0-12 12-12 22 0 6.6 5.4 12 12 12s12-5.4 12-12c0-10-12-22-12-22z" fill="url(#g)"/><path d="M32 22c0 0-6 6-6 10 0 3.3 2.7 6 6 6s6-2.7 6-6c0-4-6-10-6-10z" fill="#60A5FA" opacity="0.5"/><circle cx="28" cy="30" r="3" fill="#93C5FD" opacity="0.7"/></svg>`;
+    
+    const svgBase64 = btoa(svgString);
+    const dataUrl = `data:image/svg+xml;base64,${svgBase64}`;
 
-    // Create new favicon link
-    const link = document.createElement('link');
-    link.rel = 'icon';
-    link.type = 'image/svg+xml';
-    link.href = url;
-    document.head.appendChild(link);
+    // Add fallback data URL favicon
+    const fallbackLink = document.createElement('link');
+    fallbackLink.type = 'image/svg+xml';
+    fallbackLink.rel = 'shortcut icon';
+    fallbackLink.href = dataUrl;
+    document.head.appendChild(fallbackLink);
 
-    // Update title
-    document.title = 'AquaOpt AI - Wastewater Optimization';
-
-    return () => {
-      URL.revokeObjectURL(url);
-    };
+    // Update page title with emoji
+    document.title = '💧 AquaOpt AI - Wastewater Optimization';
   }, []);
 
   return null;
